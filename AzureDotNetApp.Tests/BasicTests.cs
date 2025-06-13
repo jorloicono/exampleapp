@@ -7,6 +7,6 @@ public class BasicTests
     [Fact]
     public void ReturnsExpectedValue()
     {
-        Assert.Equal(2, 1 + 1);
+        Assert.Equal(2,5 + 1);
     }
 }
