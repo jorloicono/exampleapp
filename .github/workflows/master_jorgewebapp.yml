@@ -3,7 +3,7 @@ name: Deploy .NET app to Azure Web App
 on:
   push:
     branches:
-      - master  # o tu rama principal
+      - master
 
 jobs:
   build-and-deploy:
@@ -16,23 +16,27 @@ jobs:
     - name: 'Set up .NET'
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'  # O la versión que estés usando
+        dotnet-version: '8.0.x'
 
     - name: 'Restore dependencies'
       run: dotnet restore
+      working-directory: AzureDotNetApp
 
     - name: 'Build app'
       run: dotnet build --configuration Release
+      working-directory: AzureDotNetApp
     
     - name: 'Run tests'
       run: dotnet test --configuration Release --no-build --verbosity normal
+      working-directory: AzureDotNetApp
 
     - name: 'Publish app'
       run: dotnet publish --configuration Release --output ./publish
+      working-directory: AzureDotNetApp
 
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: jorgewebapp  # e.g. azure-dotnet-app
+        app-name: jorgewebapp
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ./publish
+        package: AzureDotNetApp/publish
